@@ -8,7 +8,6 @@ struct Node {
 
 void create(int A[],int n) {
   struct Node *next;
- 
   int i;
   struct Node *t,*last;
   Head=(struct Node*)malloc(sizeof(struct Node));
@@ -81,7 +80,7 @@ int delete(struct Node *p,int index)
 {
   struct Node *q;
   int i,x;
-  if(index <0 || index > length(Head)) return -1;
+  if(index < 1 || index > length(Head)) return -1;
   if(index == 1) {
     while(p->next!=Head)p=p->next;
     x=Head->data;
