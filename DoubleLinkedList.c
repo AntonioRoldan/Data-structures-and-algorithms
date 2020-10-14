@@ -37,7 +37,7 @@ void insert(struct Node *p, int index, int x) {
   struct Node *t; 
   t = (struct Node *)malloc(sizeof(struct Node));
   t->data = x;
-  if(index < 0 || index >= length(p)) return; 
+  if(index < 0 || index > length(p)) return; 
   if(index == 0){
     t->next = first;
     t->prev = NULL;
@@ -55,7 +55,7 @@ void insert(struct Node *p, int index, int x) {
 
 int delete(struct Node *p, int index) {
   int x; 
-  if(index < 1 || index >= length(p)) return; 
+  if(index < 1 || index > length(p)) return; 
   if(index == 1) { 
     first = first->next; 
     if(first) first->prev = NULL; 

@@ -27,6 +27,15 @@ void create(int A[], int size)
   }
 };
 
+int length(struct Node *p) {
+  int len = 0; 
+  while(p) {
+    len++; 
+    p = p->next;
+  }
+  return len;
+}
+
 void display(struct Node *head)
 {
   do {
@@ -41,6 +50,7 @@ void insert(struct Node *p, int pos, int x)
   struct Node *t;
   t = (struct Node *)malloc(sizeof(struct Node));
   t->data = x;
+  if(pos < 0 || pos > length(p)) return;
   if(pos == 0) {
     if(Head == NULL){
         Head = t;
@@ -68,6 +78,7 @@ void insert(struct Node *p, int pos, int x)
 int delete(struct Node *p, int pos)
 {
   int x;
+  if(pos < 1 || pos > length(p)) return;
   if(pos == 1) {
     x = Head->data;
     while(p->next != Head) p = p->next;
