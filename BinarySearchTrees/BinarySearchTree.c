@@ -1,5 +1,7 @@
  #include <stdio.h>
  #include <stdlib.h>
+
+ // TODO: Write iterative delete function 
 struct Node {
   struct Node *lchild;
   int data;

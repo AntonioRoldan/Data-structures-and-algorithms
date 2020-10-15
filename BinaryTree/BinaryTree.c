@@ -34,6 +34,8 @@ For creating a binary tree a queue is used as well as a cursor pointer p and a t
  -We will use a value of -1 to signify a left or right child is empty 
  */
 
+// TODO: Write iterative traversals 
+
  #include <stdio.h>
  #include <stdlib.h>
  #include "Queue.h"

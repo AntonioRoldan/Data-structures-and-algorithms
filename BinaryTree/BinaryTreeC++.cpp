@@ -40,6 +40,7 @@ class Tree{
     void Levelorder(Node* p);
     void Levelorder() { Levelorder(root); }
     int Height(Node* p);
+    void destroyTree(Node * p);
     int Height() { return Height(root); }
     void iterativePreorder(Node* p);
     void iterativePreorder() { iterativePreorder(root); }
@@ -54,7 +55,15 @@ Tree::Tree() {
 }
  
 Tree::~Tree() {
-    // TODO
+  destroyTree(root);
+}
+ 
+void Tree::destroyTree(Node *p) {
+  if (p != nullptr){
+    destroyTree(p->lchild);
+    destroyTree(p->rchild);
+    delete p;
+  }
 }
  
 void Tree::CreateTree() {
@@ -98,6 +107,66 @@ void Tree::CreateTree() {
     }
   }
 }
+
+// int Tree::deg2NodeCount(Node *p) {
+//     int x;
+//     int y;
+//     if (p != nullptr){
+//         x = deg2NodeCount(p->lchild);
+//         y = deg2NodeCount(p->rchild);
+//         if (p->lchild && p->rchild){
+//             return x + y + 1;
+//         } else {
+//             return x + y;
+//         }
+//     }
+//     return 0;
+// }
+ 
+// int Tree::leafNodeCount(Node *p) {
+//     int x;
+//     int y;
+//     if (p != nullptr){
+//         x = leafNodeCount(p->lchild);
+//         y = leafNodeCount(p->rchild);
+//         if (p->lchild == nullptr && p->rchild == nullptr){
+//             return x + y + 1;
+//         } else {
+//             return x + y;
+//         }
+//     }
+//     return 0;
+// }
+ 
+// int Tree::deg1ordeg2NodeCount(Node *p) {
+//     int x;
+//     int y;
+//     if (p != nullptr){
+//         x = deg1ordeg2NodeCount(p->lchild);
+//         y = deg1ordeg2NodeCount(p->rchild);
+//         if (p->lchild != nullptr || p->rchild != nullptr){
+//             return x + y + 1;
+//         } else {
+//             return x + y;
+//         }
+//     }
+//     return 0;
+// }
+ 
+// int Tree::deg1NodeCount(Node *p) {
+//     int x;
+//     int y;
+//     if (p != nullptr){
+//         x = deg1NodeCount(p->lchild);
+//         y = deg1NodeCount(p->rchild);
+//         if (p->lchild != nullptr ^ p->rchild != nullptr){
+//             return x + y + 1;
+//         } else {
+//             return x + y;
+//         }
+//     }
+//     return 0;
+// }
  
 void Tree::Preorder(Node *p) {
   if (p){
