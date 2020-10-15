@@ -229,9 +229,9 @@ Node* BST::iDelete(Node* root, int key)
     // if it isn't, then make the 
     // left child of its parent equal to the 
     // inorder successor's right child. 
-    if (p != NULL) 
-      p->lchild = temp->rchild; 
-  
+    if (p != NULL) // Since it is the inorder successor if it has children it will always be
+      p->lchild = temp->rchild; // One child and that is the right child, if it was in order predecessor it would be the left child 
+                                // And we would replace the parent's right child 
     // if the inorder successor was the 
     // root, then make the right child 
     // of the node to be deleted equal 
