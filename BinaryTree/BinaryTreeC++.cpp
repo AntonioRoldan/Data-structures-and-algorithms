@@ -3,6 +3,19 @@
 #include <stack>
 
 using namespace std;
+
+/* 
+  For iterative traversal, we use a stack except for level order traversal
+  which uses a queue.
+  -while stack not empty or p != nullptr
+  -Starting from root 
+  -Store address of root in a stack
+  -Move to the left child
+  -if it is null 
+  -pop from the stack and point p to the previously added address 
+  -point p to p->right 
+  -repeat 
+*/
  
 class Node{
   public:
