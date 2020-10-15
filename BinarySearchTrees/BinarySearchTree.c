@@ -6,7 +6,7 @@ struct Node {
   struct Node *rchild;
 }*root=NULL;
 
-void insert(int key){
+void iInsert(int key){
   struct Node *t=root;
   struct Node *r=NULL,*p;
   if(root==NULL) { 
@@ -49,6 +49,8 @@ struct Node * search(int key){
   }
   return NULL;
 }
+
+
 struct Node *rInsert(struct Node *p, int key) {
   struct Node *t=NULL;
   if(p == NULL) {
@@ -62,28 +64,27 @@ struct Node *rInsert(struct Node *p, int key) {
   return p;
 }
 
-int Height(struct Node *p)
-{
+int Height(struct Node *p) {
   int x,y;
   if(p==NULL) return 0; 
   x=Height(p->lchild); 
   y=Height(p->rchild);
   return x > y ? x+1 : y+1;
 }
-struct Node *InPre(struct Node *p)
-{
+
+struct Node *InPre(struct Node *p) {
   while(p && p->rchild!=NULL)
     p=p->rchild;
   return p;
 }
-struct Node *InSucc(struct Node *p)
-{
+
+struct Node *InSucc(struct Node *p) {
   while(p && p->lchild!=NULL)
     p=p->lchild;
   return p;
 }
-struct Node *rDelete(struct Node *p,int key)
-{
+
+struct Node *rDelete(struct Node *p,int key) {
   struct Node *q;
   if(p==NULL) return NULL;
   if(p->lchild==NULL && p->rchild==NULL) {
@@ -107,6 +108,7 @@ struct Node *rDelete(struct Node *p,int key)
   }
  return p;
 }
+
 int main() {
   struct Node *temp;
   root=rInsert(root,50);
