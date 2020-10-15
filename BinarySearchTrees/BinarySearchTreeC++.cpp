@@ -20,7 +20,8 @@ class BST{
     Node* iSearch(int key);
     Node* rInsert(Node* p, int key);
     Node* rSearch(Node* p, int key);
-    Node* Delete(Node* p, int key);
+    Node* rDelete(Node* p, int key);
+    Node* iDelete(Node* p, int key);
     int Height(Node* p);
     Node* InPre(Node* p);
     Node* InSucc(Node* p);
@@ -121,7 +122,7 @@ Node* BST::rSearch(Node *p, int key) {
   }
 }
  
-Node* BST::Delete(Node *p, int key) {
+Node* BST::rDelete(Node *p, int key) {
   Node* q;
  
   if (p == nullptr){
@@ -153,6 +154,97 @@ Node* BST::Delete(Node *p, int key) {
   }
   return p;
 }
+
+Node* BST::iDelete(Node* root, int key) 
+{ 
+  Node *curr = root; 
+  Node *prev = NULL; 
+  
+  // Check if the key is actually 
+  // present in the BST. 
+  // the variable prev points to 
+  // the parent of the key to be deleted. 
+  while (curr != NULL && curr->data != key) { 
+      prev = curr; 
+      if (key < curr->data) 
+        curr = curr->lchild; 
+      else
+        curr = curr->rchild; 
+    } 
+  
+  if (curr == NULL) { 
+    cout << "Key " << key 
+    << " not found in the"
+    << " provided BST.\n"; 
+    return root; 
+  } 
+  
+  // Check if the node to be 
+  // deleted has atmost one child. 
+  if (curr->lchild == NULL 
+    || curr->rchild == NULL) { 
+  
+    // newCurr will replace 
+    // the node to be deleted. 
+    Node *newCurr; 
+  
+    // if the left child does not exist. 
+    if (curr->lchild == NULL) 
+      newCurr = curr->rchild; 
+    else
+      newCurr = curr->lchild; 
+  
+    // check if the node to 
+    // be deleted is the root. 
+    if (prev == NULL) 
+      return newCurr; 
+  
+    // check if the node to be deleted 
+    // is prev's left or right child 
+    // and then replace this with newCurr 
+    if (curr == prev->lchild) 
+      prev->lchild = newCurr; 
+    else
+      prev->rchild = newCurr; 
+  
+    // free memory of the 
+    // node to be deleted. 
+    free(curr); 
+  } 
+  // node to be deleted has 
+  // two children. 
+  else { 
+    Node* p = NULL; 
+    Node* temp; 
+  
+        // Compute the inorder successor 
+    temp = curr->rchild; 
+    while (temp->lchild != NULL) { 
+      p = temp; 
+      temp = temp->lchild; 
+    } 
+  
+    // check if the parent of the inorder 
+    // successor is the root or not. 
+    // if it isn't, then make the 
+    // left child of its parent equal to the 
+    // inorder successor's right child. 
+    if (p != NULL) 
+      p->lchild = temp->rchild; 
+  
+    // if the inorder successor was the 
+    // root, then make the right child 
+    // of the node to be deleted equal 
+    // to the right child of the inorder 
+    // successor. 
+    else
+      curr->rchild = temp->rchild; 
+  
+    curr->data = temp->data; 
+    free(temp); 
+  } 
+  return root; 
+} 
  
 int BST::Height(Node *p) {
   int x;
@@ -237,7 +329,7 @@ int main() {
   cout << endl;
  
     // Delete
-  bs.Delete(bs.getRoot(), 7);
+  bs.rDelete(bs.getRoot(), 7);
   bs.Inorder(bs.getRoot());
     
   return 0;

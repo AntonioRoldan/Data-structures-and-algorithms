@@ -11,7 +11,7 @@ int isOperand(char x){
   }
   return 1;
 }
- 
+
 int outPrecedence(char x){
   if (x == '+' || x == '-'){
     return 1;
