@@ -20,14 +20,14 @@ void iInsert(int key){
   }
   while(t!=NULL){
     r=t;
-    if(key<t->data) t=t->lchild;
+    if(key < t->data) t=t->lchild;
     else if(key>t->data) t=t->rchild;
     else return;
   }
   p=(struct Node *)malloc(sizeof(struct Node));
   p->data=key;
   p->lchild=p->rchild=NULL;
-  if(key<r->data) r->lchild=p;
+  if(key < r->data) r->lchild=p;
   else r->rchild=p;
 }
 

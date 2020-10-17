@@ -39,8 +39,8 @@ void Display(){
   struct Node *p=front;
   while(p) {
     printf("%d ",p->data);
+    p=p->next;
   }
-  p=p->next;
   printf("\n");
 }
 
