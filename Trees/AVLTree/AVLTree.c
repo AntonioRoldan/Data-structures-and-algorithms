@@ -331,24 +331,6 @@ void iInsert(struct Node* p, int key){
     }
 }
 
-void iDelete(struct Node *p, int key){
-    if(p == NULL) return;
-    while( p != NULL){
-        push(p);
-        if(key > p->data){
-            p = p->rchild;
-        } else if(key < p->data){
-            p = p->lchild;
-        } else {
-            break;
-        }
-    }
-    if(p == NULL) return; // The key we want to delete does not exist
-    
-    while(top != NULL) {
-        
-    }
-}
 void Inorder(struct Node *p){
   if(p){
     Inorder(p->lchild);
