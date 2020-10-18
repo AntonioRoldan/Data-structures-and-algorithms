@@ -1,90 +1,96 @@
-/* 
+
+/*
   What happens with the children of the node that we will replace the root by?
-  They maintain their position, right or left, while being added to the left and right 
+  They maintain their position, right or left, while being added to the left and right
   children of the root.
-  We only count the first three nodes when performing a rotation 
+  We only count the first three nodes when performing a rotation
   so the root will be replaced by the third node on the left, if it is LL or LR imbalance,
-  or the right if it is RR or RL imbalance. 
-  This applies to both single rotation and double rotation. 
-  Single rotation is used for Left of left rotation and right of right rotation 
+  or the right if it is RR or RL imbalance.
+  This applies to both single rotation and double rotation.
+  Single rotation is used for Left of left rotation and right of right rotation
   Double rotation for left of right and right of left
   So we calculate the height of the tree on the right and the left side
-  of the root, this is the balance factor. 
-  Balanced values are -1, 0 and 1. 
+  of the root, this is the balance factor.
+  Balanced values are -1, 0 and 1.
   So the absolute value of the balance factor must be <= 1
   for the tree to be balanced.
-  If imbalanced it will only have the value of two or minus 2 
+  If imbalanced it will only have the value of two or minus 2
   Since balancing rotations are always performed upon insertion and deletion
   If it is a LL imbalance the third node on the left takes the position of the left child of the root,
-  while the left child takes the position of the root and the root becomes the right child of our new root 
-  If the replacing node has children on the right side, we respect the positioning and add them as left children of the right 
+  while the left child takes the position of the root and the root becomes the right child of our new root
+  If the replacing node has children on the right side, we respect the positioning and add them as left children of the right
   child of the new root.
   RR imbalance is the same but in right-left direction.
   If it is a LR imbalance, we take the left children of the replacing node and keep them on the left side
-  of the root node, they will be the right children of the left child of the new node 
-  which is the same as the left child of the old root. 
-  Its right children are added as the left children of the right child of our new root which is the old root 
+  of the root node, they will be the right children of the left child of the new node
+  which is the same as the left child of the old root.
+  Its right children are added as the left children of the right child of our new root which is the old root
   For deletion we have L1 L-1 and L0 rotations depending on the balance factor
   of the left child of the root with L1 being LL rotation, L-1 being LR rotation.
-  These cases apply when deleting a node from the right side of the root  
-  for L0 we can use either of L1 and L-1 same logic applies to R1, R-1 and R0 
+  These cases apply when deleting a node from the right side of the root
+  for L0 we can use either of L1 and L-1 same logic applies to R1, R-1 and R0
   
-  The following diagram will help understand LR rotation  
-        p                   plr 
+  The following diagram will help understand LR rotation
+        p                   plr
       /   \   ------>    /      \
-     pl                pl        p  
-        \                \     /   
-         plr 
+     pl                pl        p
+        \                \     /
+         plr
         /   \
   
-  pl = p->lChild; 
+  pl = p->lChild;
   plr = pl->rChild;
-  pl->rChild = plr->lChild; 
-  p->lChild = plr->rChild; 
+  pl->rChild = plr->lChild;
+  p->lChild = plr->rChild;
 
-  plr->lChild = pl; 
-  plr->rChild = p; 
+  plr->lChild = pl;
+  plr->rChild = p;
   Now an example of LL rotation
-        p              pl 
+        p              pl
      /    \    ->    /    \
-    pl                     p 
+    pl                     p
    /  \                   /
       plr               plr
   
-  pl = p->lChild; 
-  plr = pl->rChild; 
+  pl = p->lChild;
+  plr = pl->rChild;
 
-  pl->rChild = p; 
-  p->lChild = plr; 
-  In this case we use the pointer plr to keep track of the soon-to-be root's right child             
+  pl->rChild = p;
+  p->lChild = plr;
+  In this case we use the pointer plr to keep track of the soon-to-be root's right child
   Whenever we find an imbalance at any node in the tree
   we always perform the rotation from the third node starting from above
   If we have a balance factor of -2 since the balance factor is the result
   of lh - rh we have a right imbalance
   If the right child of the root whose subtree/tree is imbalanced is -1
   we have an RR imbalance because the third child is on the right since bf = lh - rh
-  if it is 1 we have RL because the third child is on the left 
+  if it is 1 we have RL because the third child is on the left
   Same with left imbalances.
+  Here is how to understand recursive deletion
+
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-struct Node {
-  struct Node *lchild;
-  int data;
-  int bf;
-  int height;
-  struct Node *rchild;
- }*root=NULL;
+#include "stack.h"
 
 int height(struct Node *p) {
   int x=0,y=0;
   if(!p)return 0;
-  x=height(p->lchild); 
+  x=height(p->lchild);
   y=height(p->rchild);
   return x>y?x+1:y+1;
+}
+
+int iHeight(struct Node *p) {
+  int hl;
+  int hr;
+ 
+  hl = (p && p->lchild) ? p->lchild->height : 0;
+  hr = (p && p->rchild) ? p->rchild->height : 0;
+ 
+  return hl > hr ? hl + 1 : hr + 1;
 }
 
 void Insert(int key) {
@@ -113,6 +119,70 @@ void Insert(int key) {
   p->lchild=p->rchild=NULL;
   if(key<r->data) r->lchild=p;
   else r->rchild=p;
+}
+
+int balanceFactor(struct Node *p) {
+  int hl;
+  int hr;
+ 
+  hl = (p && p->lchild) ? p->lchild->height : 0;
+  hr = (p && p->rchild) ? p->rchild->height : 0;
+ 
+  return hl - hr;
+}
+
+struct Node * iLLRotation(struct Node *p) {
+  struct Node *pl=p->lchild;
+  p->lchild=pl->rchild;
+  pl->rchild=p;
+  
+  p->height = iHeight(p);
+  pl->height = iHeight(pl);
+  return pl;
+}
+
+struct Node * iLRRotation(struct Node* p){
+    struct Node *pl = p->lchild;
+    struct Node *plr = pl->rchild;
+    pl->rchild = plr->lchild;
+    p->lchild = plr->rchild;
+    plr->rchild = p;
+    plr->lchild = pl;
+    pl->height = iHeight(pl);
+    p->height = iHeight(p);
+    plr->height = iHeight(plr);
+    if(p == root){
+        root = plr;
+    }
+    return plr;
+}
+
+struct Node * iRLRotation(struct Node *p) {
+    struct Node *pr = p->rchild;
+    struct Node *prl = pr->lchild;
+    pr->lchild = prl->rchild;
+    p->rchild = prl->lchild;
+    prl->lchild = p;
+    prl->rchild = pr;
+    pr->height = iHeight(pr);
+    p->height = iHeight(p);
+    prl->height = iHeight(prl);
+    if(p == root){
+        root = prl;
+    }
+    return prl;
+}
+
+struct Node * iRRRotation(struct Node* p){
+    struct Node *pr = p->rchild;
+    p->rchild = pr->lchild;
+    pr->lchild = p;
+    p->height = iHeight(p);
+    pr->height = iHeight(p);
+    if(p == root){
+        root = pr;
+    }
+    return pr;
 }
 struct Node * LLRotation(struct Node *p) {
   int lbf,rbf;
@@ -189,7 +259,8 @@ struct Node* RInsert(struct Node *p,int key)
     p->lchild=RInsert(p->lchild,key);
   else if(key>p->data)
     p->rchild=RInsert(p->rchild,key);
-  lbf=height(p->lchild)+1; rbf=height(p->rchild)+1;
+  lbf=height(p->lchild)+1;
+  rbf=height(p->rchild)+1;
   p->bf=lbf-rbf;
   if(p->bf==2 && p->lchild->bf==1)
     return LLRotation(p);
@@ -201,10 +272,88 @@ struct Node* RInsert(struct Node *p,int key)
     return RLRotation(p);
   return p;
 }
+
+void iInsert(struct Node* p, int key){
+    struct Node *q = (struct Node *)malloc(sizeof(struct Node));
+    struct Node *t;
+    int lh, rh;
+    if(p==NULL) {
+      t=(struct Node *)malloc(sizeof(struct Node));
+      t->data=key;
+      t->bf=0;
+      t->height = 1;
+      t->lchild=t->rchild=NULL;
+      t->isRoot = true;
+      p = t;
+      root = t;
+      return;
+    }
+    while(p != NULL){
+        push(p); // We push each visited node in a stack so we can do balancing rotations iteratively
+        q = p; //After inserting node
+        if(key < p->data){
+            p = p->lchild;
+        } else if(key > p->data){
+            p = p->rchild;
+        } else {
+            return;
+        }
+    }
+    t = (struct Node *)malloc(sizeof(struct Node));
+    t->data = key;
+    t->rchild = t->lchild = NULL;
+    t->height = 1;
+    t->isRoot = false;
+    t->bf = 0;
+    if(key > q->data){
+        q->rchild = t;
+    } else if(key < q->data) {
+        q->lchild = t;
+        
+    }
+    if(q->isRoot){
+        return;
+    }
+    while(top != NULL){ // While stack is not empty
+        p = pop();
+        rh = p->rchild ? p->rchild->height : 0;
+        lh = p->lchild ? p->lchild->height : 0;
+        p->bf = rh - lh;
+        if(p->bf == 2 && p->lchild->bf == 1){
+            p = iLLRotation(p);
+        } else if(p->bf == 2 && p->lchild->bf == -1){
+            p = iLRRotation(p);
+        } else if(p->bf == -2 && p->rchild->bf == -1){
+            p = iRRRotation(p);
+        } else if(p->bf == -2 && p->rchild->bf == 1){
+            p = iRLRotation(p);
+        }
+    }
+}
+
+void iDelete(struct Node *p, int key){
+    if(p == NULL) return;
+    while( p != NULL){
+        push(p);
+        if(key > p->data){
+            p = p->rchild;
+        } else if(key < p->data){
+            p = p->lchild;
+        } else {
+            break;
+        }
+    }
+    if(p == NULL) return; // The key we want to delete does not exist
+    
+    while(top != NULL) {
+        
+    }
+}
 void Inorder(struct Node *p){
   if(p){
     Inorder(p->lchild);
-    printf("%d ",p->data);
+    printf("->\n");
+    printf("%d",p->data);
     Inorder(p->rchild);
   }
 }
@@ -234,9 +383,9 @@ struct Node *InPre(struct Node *p) {
 }
 
 struct Node* Delete(struct Node *p, int key) {
-  struct Node *q; 
+  struct Node *q;
 
-  if(p == NULL) 
+  if(p == NULL)
     return NULL;
   if(p->lchild == NULL && p->rchild == NULL){
     if(p==root)
@@ -262,37 +411,30 @@ struct Node* Delete(struct Node *p, int key) {
   p->height = height(p);
 
   if(p->bf == 2) {
-    if(p->lchild->bf == 1) 
+    if(p->lchild->bf == 1)
       return LLRotation(p);
-    else 
+    else
       return LRRotation(p);
   }
   if(p->bf == -2) {
-    if(p->rchild->bf == -1) 
+    if(p->rchild->bf == -1)
       return RRRotation(p);
-    else 
+    else
       return RLRotation(p);
   }
   return p;
 }
+
 int main() {
-  struct Node *temp;
-  Insert(30);
-  RInsert(root,50);
-  RInsert(root,40);
-  RInsert(root,20);
-  RInsert(root,10);
-  RInsert(root,42);
-  RInsert(root,46);
-  Delete(root,20);
+  // Note you cannot combine iterative insert and recursive insert
+  iInsert(root,50);
+  iInsert(root,40);
+  iInsert(root,20);
+  iInsert(root,10);
+  iInsert(root,42);
+  iInsert(root,46);
   Inorder(root);
   printf("\n");
-
-  temp=Search(2);
-  if(temp!=NULL)
-    printf("element %d is found\n",temp->data);
-  else
-    printf("element is not found\n");
   return 0;
 }
 

@@ -1,5 +1,8 @@
 #include <iostream>
 
+
+// Here is how recursive deletion works
+// 
 using namespace std;
  
 class Node{

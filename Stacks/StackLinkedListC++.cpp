@@ -33,7 +33,7 @@ Stack::~Stack() {
     p = top;
   }
 }
- 
+
 void Stack::push(int x) {
   Node* t = new Node;
   if (t == nullptr){
