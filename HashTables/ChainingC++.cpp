@@ -2,6 +2,7 @@
 
 using namespace std;
 
+// We are using an array of linked lists that we connect to via hashes that we obtain from the hash function using calculating our key modulo 10 to obtain the position. Our hash function makes sure that as we increase the number of elements they will always fit within our array of linkedd lists which is the hash table. When there is a collision we simply add an element to the linked list placed where the hash table has a collision. 
 // Linked List node
 
 class Node{
