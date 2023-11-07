@@ -29,6 +29,16 @@
   of the left child of the root with L1 being LL rotation, L-1 being LR rotation.
   These cases apply when deleting a node from the right side of the root
   for L0 we can use either of L1 and L-1 same logic applies to R1, R-1 and R0
+
+  SIMPLE EXPLANATION 
+  The above text is overtly complex this is simple. 
+  Once an element is added to the tree in a BST like fashion and as we have pushed visited nodes into a stack 
+  We pop the nodes from the stack going in the opposite direction we went when we added the element 
+  and find the balance factor which cannot be any value other than one, zero and minus one. 
+  So, the tree is imbalanced as soon as our balance factor, which is the result of subtracting the height of 
+  the left sub-tree from the right sub-tree or viceversa (hence why we can have negative values), hits 2 or minus 2.
+  We perform rotations depending on the imbalance to correct it.  
+  
   
   The following diagram will help understand LR rotation
         p                   plr
@@ -45,6 +55,8 @@
 
   plr->lChild = pl;
   plr->rChild = p;
+
+ 
   Now an example of LL rotation
         p              pl
      /    \    ->    /    \
@@ -57,6 +69,8 @@
 
   pl->rChild = p;
   p->lChild = plr;
+
+  If there is an imbalance in the right child's right sub-tree we perform 
   In this case we use the pointer plr to keep track of the soon-to-be root's right child
   Whenever we find an imbalance at any node in the tree
   we always perform the rotation from the third node starting from above
