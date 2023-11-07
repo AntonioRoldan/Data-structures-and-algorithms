@@ -57,7 +57,7 @@
   plr->rChild = p;
 
  
-  Now an example of LL rotation
+  Now an example of LL rotation 
         p              pl
      /    \    ->    /    \
     pl                     p
@@ -70,7 +70,7 @@
   pl->rChild = p;
   p->lChild = plr;
 
-  If there is an imbalance in the right child's right sub-tree we perform 
+ 
   In this case we use the pointer plr to keep track of the soon-to-be root's right child
   Whenever we find an imbalance at any node in the tree
   we always perform the rotation from the third node starting from above
