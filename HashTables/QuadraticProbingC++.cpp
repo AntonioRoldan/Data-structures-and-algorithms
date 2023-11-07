@@ -5,6 +5,9 @@ using namespace std;
  
 template <class T>
 
+//Quadratic probing is the same as linear probing but instead of moving with hash function index + 1 
+//we do index + i*i
+
 void Print(T& vec, int n, string s){
   cout << s << ": [" << flush;
   for (int i=0; i<n; i++){
