@@ -2,7 +2,8 @@
 #define SIZE 10
 
 using namespace std;
- 
+//Linear probing uses the same hash function iterating linearly (increasing index by one) in order to find
+//the nearest free space circularly (we use %)
 template <class T>
 void Print(T& vec, int n, string s){
   cout << s << ": [" << flush;
